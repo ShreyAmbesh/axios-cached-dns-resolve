@@ -5,7 +5,6 @@ import net from 'net'
 import stringify from 'json-stringify-safe'
 import LRUCache from 'lru-cache'
 import util from 'util'
-import { init as initLogger } from './logging.js'
 
 const dnsResolve = util.promisify(dns.resolve)
 const dnsLookup = util.promisify(dns.lookup)
@@ -49,14 +48,12 @@ export const stats = {
   lastErrorTs: 0,
 }
 
-let log
 let backgroundRefreshId
 let cachePruneId
 
 init()
 
 export function init() {
-  log = initLogger(config.logging)
 
   if (config.cache) return
 
@@ -145,7 +142,6 @@ export async function getAddress(host) {
     return ip
   }
   ++stats.misses
-  if (log.isLevelEnabled('debug')) log.debug(`cache miss ${host}`)
 
   const ips = await resolve(host)
   dnsEntry = {
@@ -226,6 +222,6 @@ function recordError(err, errMesg) {
   ++stats.errors
   stats.lastError = err
   stats.lastErrorTs = new Date().toISOString()
-  log.error(err, errMesg)
+  console.error(err, errMesg)
 }
 /* eslint-enable no-plusplus */
