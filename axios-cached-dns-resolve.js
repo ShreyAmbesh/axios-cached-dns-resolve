@@ -11,10 +11,10 @@ const dnsLookup = util.promisify(dns.lookup)
 
 export const config = {
   disabled: process.env.AXIOS_DNS_DISABLE === 'true',
-  dnsTtlMs: process.env.AXIOS_DNS_CACHE_TTL_MS || 50000, // when to refresh actively used dns entries (5 sec)
+  dnsTtlMs: process.env.AXIOS_DNS_CACHE_TTL_MS || 60000, // when to refresh actively used dns entries (60 sec)
   cacheGraceExpireMultiplier: process.env.AXIOS_DNS_CACHE_EXPIRE_MULTIPLIER || 1, // maximum grace to use entry beyond TTL
-  dnsIdleTtlMs: process.env.AXIOS_DNS_CACHE_IDLE_TTL_MS || 1000 * 60 * 60 * 24 * 7, // when to remove entry entirely if not being used (1 hour)
-  backgroundScanMs: process.env.AXIOS_DNS_BACKGROUND_SCAN_MS || 30000, // how frequently to scan for expired TTL and refresh (2.4 sec)
+  dnsIdleTtlMs: process.env.AXIOS_DNS_CACHE_IDLE_TTL_MS || 1000 * 60 * 60 * 24 * 7, // when to remove entry entirely if not being used (7 days)
+  backgroundScanMs: process.env.AXIOS_DNS_BACKGROUND_SCAN_MS || 20000, // how frequently to scan for expired TTL and refresh (20 sec)
   dnsCacheSize: process.env.AXIOS_DNS_CACHE_SIZE || 100, // maximum number of entries to keep in cache
   // pino logging options
   logging: {
